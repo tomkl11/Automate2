@@ -1,0 +1,221 @@
+Index: main.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#include <stdio.h>\r\n#include \"automate.h\"\r\nint main() {\r\n\r\n    listEtat* Automate =creerAutomate(\"ab\",4);\r\n    displayAutomate(Automate,\"ab\");\r\n\r\n\r\n    return 0;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.c b/main.c
+--- a/main.c	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ b/main.c	(date 1678463974870)
+@@ -1,10 +1,6 @@
+ #include <stdio.h>
+-#include "automate.h"
++
+ int main() {
+-
+-    listEtat* Automate =creerAutomate("ab",4);
+-    displayAutomate(Automate,"ab");
+-
+-
++    printf("Hello, World!\n");
+     return 0;
+ }
+Index: automate.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//\r\n// Created by tmKla on 09/02/2023.\r\n//\r\n#include \"stdlib.h\"\r\n#include \"stdbool.h\"\r\n#include \"stdio.h\"\r\n#include \"string.h\"\r\ntypedef struct Etat{\r\n    char* nom;\r\n    struct Transition** listTransitions;\r\n    int* listnbTransitions;\r\n    bool Entree;\r\n    bool Sortie;\r\n}Etat;\r\ntypedef struct Transition{\r\n    Etat* data;\r\n    struct Transition* next;\r\n}Transition;\r\ntypedef struct Transition listEtat;\r\nEtat* creerEtat( char*, int);\r\nvoid ajouterLiasons(Etat* EtatX, Etat *newvoisin, int);\r\nlistEtat* creerAutomate(char* listletttres, int nbEtat);\r\nvoid displayAutomate(listEtat* Automate, char*);
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/automate.h b/automate.h
+--- a/automate.h	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ b/automate.h	(date 1678463974882)
+@@ -9,8 +9,8 @@
+     char* nom;
+     struct Transition** listTransitions;
+     int* listnbTransitions;
+-    bool Entree;
+-    bool Sortie;
++    bool entree;
++    bool sortie;
+ }Etat;
+ typedef struct Transition{
+     Etat* data;
+Index: point.h
+===================================================================
+diff --git a/point.h b/point.h
+deleted file mode 100644
+--- a/point.h	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ /dev/null	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
+@@ -1,27 +0,0 @@
+-//
+-// Created by tmKla on 28/01/2023.
+-//
+-
+-#ifndef UNTITLED10_POINT_H
+-#define UNTITLED10_POINT_H
+-
+-#endif //UNTITLED10_POINT_H
+-#include "stdlib.h"
+-#include "stdio.h"
+-typedef struct point{
+-    struct voisins* voisinsdispo;
+-    int nbvoisinsdispo;
+-    char nom;
+-}point;
+-typedef struct voisins{
+-    point* data;
+-    struct voisins* next;
+-}voisins;
+-typedef struct chemins{
+-    int nbchemins;
+-    char chemins [8][2];
+-}chemins;
+-point* creer_point(char nom);
+-voisins* creerVoisins();
+-chemins* creerChemins();
+-void relierPoint(point* point1, point* point2, chemins*);
+Index: point.c
+===================================================================
+diff --git a/point.c b/point.c
+deleted file mode 100644
+--- a/point.c	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ /dev/null	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
+@@ -1,62 +0,0 @@
+-//
+-// Created by tmKla on 28/01/2023.
+-//
+-
+-#include "point.h"
+-point* creer_point(char nom){
+-    point* newPoint= malloc(sizeof (point));
+-    newPoint->nom=nom;
+-    newPoint->voisinsdispo= NULL;
+-    return newPoint;
+-}
+-voisins* creerVoisins(){
+-    voisins* voisins1= malloc(sizeof (voisins));
+-    voisins1->data=NULL;
+-    voisins1->next=NULL;
+-    return voisins1;
+-}
+-chemins* creerChemins(){
+-    chemins* listChemins= malloc(sizeof (chemins));
+-    listChemins->nbchemins=0;
+-    return listChemins;
+-}
+-voisins* addVoisins(point* point1, voisins* voisins1){
+-    voisins* newVoisins=creerVoisins();
+-    newVoisins->data=point1;
+-    if (voisins1==NULL){
+-        return newVoisins;
+-    }
+-    voisins* temp=voisins1;
+-    while (temp->next!=NULL){
+-        temp=temp->next;
+-    }
+-    temp->next=newVoisins;
+-    return voisins1;
+-}
+-voisins* supprvoisins(voisins* voisins1, point* supprpoint){
+-    if (voisins1==NULL){
+-        printf("il n'y a plus de voisins\n");
+-        return NULL;
+-    }
+-    voisins* temp=voisins1;
+-    if (voisins1->data==supprpoint){
+-        voisins1=voisins1->next;
+-        free(temp);
+-        return voisins1;
+-    }
+-    while (temp->next->data!=supprpoint){
+-        temp=temp->next;
+-    }
+-    voisins* temp2=temp->next;
+-    temp->next=temp2->next;
+-    free(temp2);
+-    return voisins1;
+-}
+-void relierPoint(point* point1, point* point2, chemins* listChemins){
+-    point1->voisinsdispo= supprvoisins(point1->voisinsdispo,point2);
+-    point1->nbvoisinsdispo--;
+-    point2->voisinsdispo= supprvoisins(point2->voisinsdispo,point1);
+-    point2->nbvoisinsdispo--;
+-    listChemins->chemins[listChemins->nbchemins][0]=point1->nom;
+-    listChemins->chemins[listChemins->nbchemins][1]=point2->nom;
+-}
+\ No newline at end of file
+Index: main.cpp
+===================================================================
+diff --git a/main.cpp b/main.cpp
+deleted file mode 100644
+--- a/main.cpp	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ /dev/null	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
+@@ -1,6 +0,0 @@
+-#include <iostream>
+-
+-int main() {
+-    std::cout << "Hello, World!" << std::endl;
+-    return 0;
+-}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CMakeRunConfigurationManager\" shouldGenerate=\"true\" shouldDeleteObsolete=\"true\">\r\n    <generated>\r\n      <config projectName=\"untitled10\" targetName=\"untitled10\" />\r\n    </generated>\r\n  </component>\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ba981006-0dd3-49c8-a0e0-fa460eac8655\" name=\"Changes\" comment=\"vous faites ch***\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/automate.c\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/automate.c\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/automate.h\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/automate.h\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ClangdSettings\">\r\n    <option name=\"formatViaClangd\" value=\"false\" />\r\n  </component>\r\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"GitSEFilterConfiguration\">\r\n    <file-type-list>\r\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\r\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\r\n      <filtered-out-file-type name=\"TAG\" />\r\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\r\n    </file-type-list>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectApplicationVersion\">\r\n    <option name=\"ide\" value=\"CLion\" />\r\n    <option name=\"majorVersion\" value=\"2021\" />\r\n    <option name=\"minorVersion\" value=\"3.2\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2GfI8zHLo9VPTnS4rnwFqogROhr\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.cidr.known.project.marker\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"cf.first.check.clang-format\" value=\"false\" />\r\n    <property name=\"cidr.known.project.marker\" value=\"true\" />\r\n    <property name=\"cmake.loaded.for.project\" value=\"true\" />\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"untitled10\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"untitled10\" TARGET_NAME=\"untitled10\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"untitled10\" RUN_TARGET_NAME=\"untitled10\">\r\n      <method v=\"2\">\r\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ba981006-0dd3-49c8-a0e0-fa460eac8655\" name=\"Changes\" comment=\"\" />\r\n      <created>1666773055860</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1666773055860</updated>\r\n      <workItem from=\"1666773057715\" duration=\"2293000\" />\r\n      <workItem from=\"1669400589171\" duration=\"3654000\" />\r\n      <workItem from=\"1670059251254\" duration=\"3000\" />\r\n      <workItem from=\"1670499752630\" duration=\"454000\" />\r\n      <workItem from=\"1674918119990\" duration=\"9000\" />\r\n      <workItem from=\"1674918200572\" duration=\"10120000\" />\r\n      <workItem from=\"1675952669486\" duration=\"8027000\" />\r\n      <workItem from=\"1676061136290\" duration=\"3039000\" />\r\n      <workItem from=\"1676149379629\" duration=\"18084000\" />\r\n      <workItem from=\"1676404200236\" duration=\"16399000\" />\r\n      <workItem from=\"1677095263071\" duration=\"33895000\" />\r\n      <workItem from=\"1677416685004\" duration=\"163000\" />\r\n      <workItem from=\"1677416938510\" duration=\"2861000\" />\r\n      <workItem from=\"1677787037165\" duration=\"20358000\" />\r\n      <workItem from=\"1678305185096\" duration=\"14713000\" />\r\n      <workItem from=\"1678435531302\" duration=\"8000\" />\r\n      <workItem from=\"1678435787589\" duration=\"4605000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"vous faites ch***\">\r\n      <created>1678451096413</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1678451096413</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"vous faites ch***\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"vous faites ch***\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <watches-manager>\r\n      <configuration name=\"CMakeRunConfiguration\">\r\n        <watch expression=\"NewEtat\" />\r\n      </configuration>\r\n    </watches-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 4ddfadcc47606cd750d23ccfb8eac9b366529190)
++++ b/.idea/workspace.xml	(date 1678463974931)
+@@ -13,8 +13,11 @@
+   <component name="ChangeListManager">
+     <list default="true" id="ba981006-0dd3-49c8-a0e0-fa460eac8655" name="Changes" comment="vous faites ch***">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/automate.c" beforeDir="false" afterPath="$PROJECT_DIR$/automate.c" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/automate.h" beforeDir="false" afterPath="$PROJECT_DIR$/automate.h" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/point.c" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/point.h" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -35,6 +38,11 @@
+       <filtered-out-file-type name="TAG" />
+       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+     </file-type-list>
++  </component>
++  <component name="HighlightingSettingsPerFile">
++    <setting file="file://$PROJECT_DIR$/main.c" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/automate.h" root0="FORCE_HIGHLIGHTING" />
++    <setting file="file://$PROJECT_DIR$/automate.c" root0="FORCE_HIGHLIGHTING" />
+   </component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
+@@ -90,7 +98,7 @@
+       <workItem from="1677787037165" duration="20358000" />
+       <workItem from="1678305185096" duration="14713000" />
+       <workItem from="1678435531302" duration="8000" />
+-      <workItem from="1678435787589" duration="4605000" />
++      <workItem from="1678435787589" duration="11395000" />
+     </task>
+     <task id="LOCAL-00001" summary="vous faites ch***">
+       <created>1678451096413</created>
+@@ -99,7 +107,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1678451096413</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="vous faites ch***">
++      <created>1678452147242</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1678452147242</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">

@@ -1,0 +1,12 @@
+# ninja log v5
+2	138	6872674285493545	CMakeFiles/untitled7.dir/main.c.obj	c5aa10b7e6944a17
+17	178	6868380450518093	CMakeFiles/untitled7.dir/arbre_binair.c.obj	f4ab3e79444399b1
+139	290	6872674286904818	untitled7.exe	355bbad93916760a
+3	290	6872668304648963	CMakeFiles/untitled7.dir/bufferNode.c.obj	b0a830886c943c71
+57	580	6874406822076912	CMakeFiles/untitled7.dir/bst.c.obj	c8cd237e3d1c73ef
+64	280	6874408175237685	CMakeFiles/untitled7.dir/bufferNode.c.obj	b0a830886c943c71
+48	284	6874408175157665	CMakeFiles/untitled7.dir/bst.c.obj	c8cd237e3d1c73ef
+29	321	6874408175657908	CMakeFiles/untitled7.dir/main.c.obj	c5aa10b7e6944a17
+4	329	6874408175737661	CMakeFiles/untitled7.dir/arbre_binair.c.obj	f4ab3e79444399b1
+329	901	6874408181482272	untitled7.exe	9b2fc11a1add965b
+60	265	6874419445928618	CMakeFiles/untitled7.dir/bst.c.obj	c8cd237e3d1c73ef
