@@ -4,6 +4,8 @@
 
 #ifndef AUTOMATE2_STRUCTURE_H
 #define AUTOMATE2_STRUCTURE_H
+#include "string.h"
+#include "stdbool.h"
 typedef struct Etat{
     char* nom;
     struct Transitions** listTransitions;
